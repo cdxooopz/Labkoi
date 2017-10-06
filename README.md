@@ -1,4 +1,4 @@
-# Labkoi V.2.5<br>
+# Labkoi<br>
 Template MVC Bakoffice Project<br>
 Included : <br>
 • PDO Class database <br>
