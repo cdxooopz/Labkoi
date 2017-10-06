@@ -1,0 +1,2 @@
+[07-Oct-2017 01:58:47 Asia/Bangkok] PHP Fatal error:  Class 'Permission' not found in /Applications/XAMPP/xamppfiles/htdocs/Labkoi/backoffice/ck.define.php on line 46
+[07-Oct-2017 01:58:49 Asia/Bangkok] PHP Fatal error:  Class 'Permission' not found in /Applications/XAMPP/xamppfiles/htdocs/Labkoi/backoffice/ck.define.php on line 46
