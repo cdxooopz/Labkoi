@@ -1,0 +1,2 @@
+Time : 11:46:58
+SQLSTATE[HY000] [2002] php_network_getaddresses: getaddrinfo failed: nodename nor servname provided, or not known

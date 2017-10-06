@@ -1,0 +1,1 @@
+[04-Sep-2017 11:46:58 Europe/Amsterdam] PHP Warning:  PDO::__construct(): php_network_getaddresses: getaddrinfo failed: nodename nor servname provided, or not known in /Applications/XAMPP/xamppfiles/htdocs/template_update/backoffice/ck_plugin/libraries/class.db.php on line 61
