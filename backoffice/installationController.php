@@ -48,11 +48,14 @@ define("BACKOFFICE"		,CONTROLLER 	. DS . "backoffice");';
 		$txts[] = '
 define("MODEL"		,  SYSTEM_PATH 	. DS . "model");';
 		$txts[] = '
-';
+$_url = explode("/", $_SERVER["REQUEST_URI"]);';
+
+		$txts[] = '
+$_baseURL = $_SERVER["REQUEST_SCHEME"] . "://" . $_SERVER["SERVER_NAME"] . "/" . $_url[1] . "/";';
 		$txts[] = '
 ## URL ##';
 		$txts[] = '
-define("BASE_URL", "' . p_string('base_url'). '");';
+define("BASE_URL", $_baseURL);';
 		$txts[] = '
 ini_set("log_errors" , "1");';
 		$txts[] = '
