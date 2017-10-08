@@ -5,4 +5,9 @@ Included : <br>
 • Bootstrap  <br>
 • Responsive Design <br>
 • MVC Structure <br>
-• Installation Module 
+• Installation Module <br>
+
+How to start with this MVC template <br>
+# Refference <br>
+• AdminLTE <br>
+• Class Database from Vivek Wicky Aswal (Include Modified in Labkoi) <br>
