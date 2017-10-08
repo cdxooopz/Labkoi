@@ -23,10 +23,24 @@ class DB
     private $bConnected = false;
     
     # @object, Object for logging exceptions	
-    private $log;
+    protected $log;
     
     # @array, The parameters of the SQL query
-    private $parameters;
+    protected $parameters;
+    
+    protected $_tableName;
+    protected $_wh;
+    protected $_where;
+    protected $_andWhere = array();
+    protected $_orWhere = array();
+    protected $_whereBetween = array();
+    protected $_orWhereBetween = array();
+    protected $_whereIn = array();
+    protected $_whereNotIn = array();
+    protected $_groupBy;
+    protected $_orderBy = array();
+    protected $_join = array();
+    protected $_limit = array();
     
     /**
      *   Default Constructor 
@@ -233,7 +247,6 @@ class DB
     {
         return $this->pdo->rollBack();
     }
-    
     /**
      *	Returns an array which represents a column from the result set 
      *
@@ -302,9 +315,157 @@ class DB
             $message .= "\r\nRaw SQL : " . $sql;
         }
         # Write into log
-        $this->log->write($message);
+        echo $message;
+//         $this->log->write($message);
         
         return $exception;
+    }
+    
+    protected function excute($query, $params = null, $fetchmode = PDO::FETCH_OBJ)
+    {
+	    
+    }
+//     DB::table('name')->join('table', 'name.id', '=', 'table.id')->select('name.id', 'table.email');
+    public function join($table = null, $colFirst = null, $colSecond = null, $operater = '=', $type = "INNER JOIN")
+    {
+	    $this->_join[] = " {$type} {$table} ON {$this->_tableName}.{$colFirst} {$operater} {$table}.{$colSecond}";
+	    return $this;
+    }
+    public function get($columns = array(), $params = null, $fetchmode = PDO::FETCH_OBJ)
+    {
+	    $t = $this->_tableName;
+	    $c = (is_array($column) ? implode(',', $columns) : '*');
+	    $w = $this->_wh;
+	    $o = ($this->_orderBy ? ' ORDER BY ' . implode(', ', $this->_orderBy) : '');
+	    $g = (!empty($this->_groupBy) ? $this->_groupBy : '');
+	    $j = implode('', $this->_join);
+	    $l = $this->_limit;
+	    
+	    $sql = "SELECT {$c} FROM {$t} {$j} {$w} {$g} {$o} {$l}";
+	    $sql = $this->prepareSql($sql);
+	    $this->Init($sql);
+	    $result = $this->sQuery->fetchAll(PDO::FETCH_OBJ);
+        return $result;
+    }
+    public function first()
+    {
+	    $t = $this->_tableName;
+	    $c = (is_array($column) ? implode(',', $columns) : '*');
+	    $w = $this->_wh;
+	    $o = ($this->_orderBy ? ' ORDER BY ' . implode(', ', $this->_orderBy) : '');
+	    $g = (!empty($this->_groupBy) ? $this->_groupBy : '');
+	    $l = 'LIMIT 1';
+	    
+	    $sql = "SELECT {$c} FROM {$t} {$w} {$g} {$o} {$l}";
+	    $sql = $this->prepareSql($sql);
+
+	    $this->Init($sql);
+	    $result = $this->sQuery->fetch(PDO::FETCH_OBJ);
+        return $result;
+    }
+    public function pluck($index, $val = null)
+    {
+	    $t = $this->_tableName;
+	    $c = (is_null($val) ? $index : $index . ',' . $val);
+	    $w = $this->_wh;
+	    $o = ($this->_orderBy ? ' ORDER BY ' . implode(', ', $this->_orderBy) : '');
+	    $g = (!empty($this->_groupBy) ? $this->_groupBy : '');
+	    
+	    $sql = "SELECT {$c} FROM {$t} {$w} {$g} {$o} {$l}";
+	    $sql = $this->prepareSql($sql);
+	    $this->Init($sql);
+	    $result = $this->sQuery->fetchAll(PDO::FETCH_OBJ);
+	    $rs = array();
+	    if(is_null($val))
+	    {
+		    foreach($result as $k => $v)
+		    {
+			    $rs[] = $v->$index;
+		    }
+	    }
+	    else
+	    {
+		    foreach($result as $k => $v)
+		    {
+			    $rs[$v->$index] = $v->$val;
+		    }
+	    }
+        return $rs;
+    }
+    protected function prepareSql($sql)
+    {    
+	    $sql = str_replace('1 AND ', '', $sql);
+	    $sql = str_replace('1 OR ', '', $sql);
+	    $sql = str_replace(' WHERE 1', '', $sql);
+	    $sql = str_replace(' ORDER BY 1', '', $sql);
+	    return $sql;
+    }
+    protected function wh()
+    {
+	    	$w = null;
+	    $w .= (is_null($w) ? ' WHERE ' . ($this->_where ? $this->_where : 1) : ($this->_where ? $this->_where : 1));
+	    $w .= (is_null($w) ? ' WHERE ' . ($this->_andWhere ? implode(' AND ', $this->_andWhere) : 1) : ' AND ' . ($this->_andWhere ? implode(' AND ', $this->_andWhere) : 1));
+	    $w .= (is_null($w) ? ' WHERE ' . ($this->_orWhere ? implode(' OR ', $this->_orWhere) : 1) : ' OR ' .($this->_orWhere ? implode(' OR ', $this->_orWhere) : 1));
+	    $w .= (is_null($w) ? ' WHERE ' . ($this->_whereBetween ? implode(' AND ', $this->_whereBetween) : 1) : ' AND ' .($this->_whereBetween ? implode(' AND ', $this->_whereBetween) : 1));
+	    $w .= (is_null($w) ? ' WHERE ' . ($this->_orWhereBetween ? implode(' OR ', $this->_orWhereBetween) : 1) : ' OR ' .($this->_orWhereBetween ? implode(' OR ', $this->_orWhereBetween) : 1));
+	    $w .= (is_null($w) ? ' WHERE ' . ($this->_whereIn ? implode(' AND ', $this->_whereIn) : 1) : ' AND ' .($this->_whereIn ? implode(' AND ', $this->_whereIn) : 1));
+	    $w .= (is_null($w) ? ' WHERE ' . ($this->_whereNotIn ? implode(' AND ', $this->_whereNotIn) : 1) : ' AND ' .($this->_whereNotIn ? implode(' AND ', $this->_whereNotIn) : 1));
+	    $this->_wh = $w;
+    }
+    public function table($name)
+    {
+	    $this->_tableName = ($name ? $name : '');
+	    return $this;
+    }
+    public function where($col, $operator, $val)
+    {
+	    $this->_where = "$col $operator '$val'";
+	    return $this;
+    }
+    public function andWhere($col, $operator, $val)
+    {
+	    $this->_andWhere[] = "$col $operator '$val'";
+	    return $this;
+    }
+    public function orWhere($col, $operator, $val)
+    {
+	    $this->_orWhere[] = "$col $operator '$val'";
+	    return $this;
+    }
+    public function whereBetween($col, $val = array())
+    {
+	    $this->_whereBetween[] = "$col BETWEEN $val[0] AND $val[1]";
+	    return $this;
+    }
+    public function orWhereBetween($col, $val = array())
+    {
+	    $this->_orWhereBetween[] = "$col BETWEEN $val[0] AND $val[1]";
+	    return $this;
+    }
+    public function whereIn($col, $val = array())
+    {
+	    $this->_whereIn[] = "$col IN (" . (is_array($val) ? implode(',', $val) : $val) . ")";
+	    return $this;
+    }
+    public function whereNotIn($col, $val = array())
+    {
+	    $this->_whereNotIn[] = "$col NOT IN (" . (is_array($val) ? implode(',', $val) : $val) . ")";
+	    return $this;
+    }
+    public function groupBy($col = array())
+    {
+	    $this->_groupBy = " GROUP BY " . (is_array($col) ? implode(', ', $col) : $col);
+	    return $this;
+    }
+    public function orderBy($col, $sort = 'ASC')
+    {
+	    $this->_orderBy[] = "$col $sort";
+	    return $this;
+    }
+    public function limit($limit = 0, $offset = null )
+    {
+	    $this->_limit = 'LIMIT ' . (!is_null($offset) ? $offset . ',' : '') . $limit;
+	    return $this;
     }
 }
 ?>

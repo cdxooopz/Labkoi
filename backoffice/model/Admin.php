@@ -9,6 +9,14 @@
 			
 			# Primary Key of the Table
 			protected $pk	 = 'admin_id';
+			
+			public function getTable(){
+				return $this->table;
+			}
+			
+			public function getPk(){
+				return $this->pk;
+			}
 	}
 
 ?>

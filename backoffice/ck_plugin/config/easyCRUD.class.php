@@ -6,7 +6,7 @@
 * @version      0.1a
 */
 require_once(LIBRARIES_PATH . DS . 'class.db' . EXT);
-class Crud {
+class Crud Extends DB{
 
 	private $db;
 

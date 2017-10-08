@@ -129,6 +129,7 @@
         <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
           <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
           <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+          <li><a href="#control-sidebar-model-tab" data-toggle="tab"><i class="fa fa-plus"></i></a></li>
         </ul>
         <!-- Tab panes -->
         <div class="tab-content">
@@ -280,6 +281,19 @@
                   <a href="javascript::;" class="text-red pull-right"><i class="fa fa-trash-o"></i></a>
                 </label>
               </div><!-- /.form-group -->
+            </form>
+          </div><!-- /.tab-pane -->
+          <div class="tab-pane" id="control-sidebar-model-tab">
+            <form method="post" action="./createModel" target="@Alert">
+              <h3 class="control-sidebar-heading">Create Model</h3>
+              <div class="form-group">
+                <input type="text" id="model-name" name="model-name" class="form-control ui-corner-all input " data-parsley-required="true" placeholder="Model Name">
+                <input type="text" id="model-table" name="model-table" class="form-control ui-corner-all input " data-parsley-required="true" placeholder="Model Table">
+                <input type="text" id="model-pk" name="model-pk" class="form-control ui-corner-all input " data-parsley-required="true" placeholder="Model PK">
+                <input type="text" id="model-status" name="model-status" class="form-control ui-corner-all input " data-parsley-required="true" placeholder="Model Status">
+              </div><!-- /.form-group -->
+              <button type="submit" class="btn btn-success col-xs-12">Submit</button>
+              <button type="reset" class="btn btn-danger col-xs-12">Cancel</button>
             </form>
           </div><!-- /.tab-pane -->
         </div>

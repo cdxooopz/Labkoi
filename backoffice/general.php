@@ -106,7 +106,7 @@
 				$t = ''; 
 				foreach($msg as $msg){	$t .= $msg.'\n';	}
 				echo "<script language=\"javascript\">
-				alert('".$t."');
+// 				alert('".$t."');
 				swal(
 				  '{$topic}',
 				  '{$t}',
@@ -116,7 +116,7 @@
 	
 			}else{
 				echo "<script language=\"javascript\">
-				alert('".$msg."');
+// 				alert('".$msg."');
 				swal(
 				  '{$topic}',
 				  '{$msg}',

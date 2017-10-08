@@ -171,6 +171,19 @@ require(MODEL . DS . "' . ucfirst($menu) . '.php");';
 		$txts[] = '
 		protected $status	 = "status";';
 		$txts[] = '
+			public function getTable(){';
+		$txts[] = '
+				return $this->table;';
+		$txts[] = '
+			}';
+			
+		$txts[] = '
+			public function getPk(){';
+		$txts[] = '
+				return $this->pk;';
+		$txts[] = '
+			}';
+		$txts[] = '
 	}';
 		$txts[] = '	
 ?>';
