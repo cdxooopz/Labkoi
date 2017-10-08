@@ -29,6 +29,7 @@ require LIBRARIES_PATH . DS . "class.db" . EXT;
 require LIBRARIES_PATH . DS . "class.password.generate" . EXT;
 require LIBRARIES_PATH . DS . "class.ssp" . EXT;
 require LIBRARIES_PATH . DS . "class.upload" . EXT;
+require LIBRARIES_PATH . DS . "class.permission" . EXT;
 require LIBRARIES_PATH . DS . "barcodeAPI" .DS ."Unirest" . EXT;
 require LIBRARIES_PATH . DS . "barcode" .DS ."BarcodeGenerator" . EXT;
 require LIBRARIES_PATH . DS . "barcode" .DS ."BarcodeGeneratorHTML" . EXT;
