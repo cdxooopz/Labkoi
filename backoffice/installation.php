@@ -102,22 +102,22 @@
           <div class="form-group">
             <label class="control-label">Host</label>
             <input id="host" maxlength="100" type="text" required="required" class="form-control" placeholder="ext. localhost" />
-            <span class="text-danger">** คำอธิบาย</span>
+            <span class="text-danger">** Host Database Name </span>
           </div>
           <div class="form-group">
             <label class="control-label">Username</label>
             <input id="username"  maxlength="100" type="text" required="required" class="form-control" placeholder="ext. root" />
-            <span class="text-danger">** คำอธิบาย</span>
+            <span class="text-danger">** Username Access Database</span>
           </div>
           <div class="form-group">
             <label class="control-label">Password</label>
             <input id="password" maxlength="100" type="password" required="required" class="form-control" placeholder="ext. ****" />
-            <span class="text-danger">** คำอธิบาย</span>
+            <span class="text-danger">** Password Access Database</span>
           </div>
           <div class="form-group">
             <label class="control-label">Database</label>
             <input id="database" maxlength="100" type="text" required="required" class="form-control" placeholder="ext. dbname" />
-            <span class="text-danger">** คำอธิบาย</span>
+            <span class="text-danger">** Database Name</span>
           </div>
           <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" id="send-step2">Next</button>
         </div>
