@@ -14,6 +14,11 @@ Included : <br>
 4. Enter the database config, Project config.
 5. Enter the username and password after finish installation.
 Note: You can manual setting without installation.php.
+# Database use.
+• You can used database class as below:<br>
+  $db = new DB();
+  $db->table('tableName')->get();
+
 # Refference <br>
 • AdminLTE <br>
 • Class Database from Vivek Wicky Aswal (Include Modified in Labkoi) <br>
