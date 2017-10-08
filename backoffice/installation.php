@@ -131,22 +131,17 @@
           <div class="form-group">
             <label class="control-label">WEB_PROJECT</label>
             <input id="web_project" maxlength="100" type="text" required="required" class="form-control" placeholder="Enter WEB_PROJECT" />
-            <span class="text-danger">** คำอธิบาย</span>
+            <span class="text-danger">** Website Project Name</span>
           </div>
           <div class="form-group">
             <label class="control-label">DB_PREFIX</label>
             <input id="db_prefix"  maxlength="100" type="text" required="required" class="form-control" placeholder="ext. db_" />
-            <span class="text-danger">** คำอธิบาย</span>
+            <span class="text-danger">** Prefix Table name</span>
           </div>
           <div class="form-group">
             <label class="control-label">DB_VIEW</label>
             <input id="db_view" maxlength="100" type="text" required="required" class="form-control" placeholder="ext. view_" />
-            <span class="text-danger">** คำอธิบาย</span>
-          </div>
-          <div class="form-group">
-            <label class="control-label">BASE_URL</label>
-            <input id="base_url" maxlength="100" type="text" required="required" class="form-control" placeholder="ext. http://localhost" />
-            <span class="text-danger">** คำอธิบาย</span>
+            <span class="text-danger">** Prefix Table View</span>
           </div>
 
           <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" id="send-step1">Next</button>
