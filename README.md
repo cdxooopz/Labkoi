@@ -16,8 +16,14 @@ Included : <br>
 Note: You can manual setting without installation.php.
 # Database use.
 • You can used database class as below:<br>
-```$db = new DB();
+```
+  $db = new DB();
   $db->table('tableName')->get();
+```
+or using Vivek Wicky Aswal's PDO class.
+```
+  $db = new Model();
+  $db->all();
 ```
 
 # Refference <br>
