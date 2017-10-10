@@ -37,6 +37,7 @@ class DB
     protected $_orWhereBetween = array();
     protected $_whereIn = array();
     protected $_whereNotIn = array();
+    protected $_whereNotNull = array();
     protected $_groupBy;
     protected $_orderBy = array();
     protected $_join = array();
@@ -325,7 +326,6 @@ class DB
     {
 	    
     }
-//     DB::table('name')->join('table', 'name.id', '=', 'table.id')->select('name.id', 'table.email');
     public function join($table = null, $colFirst = null, $colSecond = null, $operater = '=', $type = "INNER JOIN")
     {
 	    $this->_join[] = " {$type} {$table} ON {$this->_tableName}.{$colFirst} {$operater} {$table}.{$colSecond}";
@@ -334,15 +334,16 @@ class DB
     public function get($columns = array(), $params = null, $fetchmode = PDO::FETCH_OBJ)
     {
 	    $t = $this->_tableName;
-	    $c = (is_array($column) ? implode(',', $columns) : '*');
-	    $w = $this->_wh;
+	    $c = (is_array($columns) ? implode(',', $columns) : '*');
+	    $w = $this->wh();
 	    $o = ($this->_orderBy ? ' ORDER BY ' . implode(', ', $this->_orderBy) : '');
 	    $g = (!empty($this->_groupBy) ? $this->_groupBy : '');
 	    $j = implode('', $this->_join);
-	    $l = $this->_limit;
+	    $l = (empty($this->_limit) ? '' : $this->_limit);
 	    
 	    $sql = "SELECT {$c} FROM {$t} {$j} {$w} {$g} {$o} {$l}";
 	    $sql = $this->prepareSql($sql);
+	    echo $sql;
 	    $this->Init($sql);
 	    $result = $this->sQuery->fetchAll(PDO::FETCH_OBJ);
         return $result;
@@ -394,23 +395,24 @@ class DB
     }
     protected function prepareSql($sql)
     {    
-	    $sql = str_replace('1 AND ', '', $sql);
-	    $sql = str_replace('1 OR ', '', $sql);
+	    $sql = str_replace(' AND 1', '', $sql);
+	    $sql = str_replace(' OR 1', '', $sql);
 	    $sql = str_replace(' WHERE 1', '', $sql);
 	    $sql = str_replace(' ORDER BY 1', '', $sql);
 	    return $sql;
     }
     protected function wh()
     {
-	    	$w = null;
-	    $w .= (is_null($w) ? ' WHERE ' . ($this->_where ? $this->_where : 1) : ($this->_where ? $this->_where : 1));
-	    $w .= (is_null($w) ? ' WHERE ' . ($this->_andWhere ? implode(' AND ', $this->_andWhere) : 1) : ' AND ' . ($this->_andWhere ? implode(' AND ', $this->_andWhere) : 1));
-	    $w .= (is_null($w) ? ' WHERE ' . ($this->_orWhere ? implode(' OR ', $this->_orWhere) : 1) : ' OR ' .($this->_orWhere ? implode(' OR ', $this->_orWhere) : 1));
-	    $w .= (is_null($w) ? ' WHERE ' . ($this->_whereBetween ? implode(' AND ', $this->_whereBetween) : 1) : ' AND ' .($this->_whereBetween ? implode(' AND ', $this->_whereBetween) : 1));
-	    $w .= (is_null($w) ? ' WHERE ' . ($this->_orWhereBetween ? implode(' OR ', $this->_orWhereBetween) : 1) : ' OR ' .($this->_orWhereBetween ? implode(' OR ', $this->_orWhereBetween) : 1));
-	    $w .= (is_null($w) ? ' WHERE ' . ($this->_whereIn ? implode(' AND ', $this->_whereIn) : 1) : ' AND ' .($this->_whereIn ? implode(' AND ', $this->_whereIn) : 1));
-	    $w .= (is_null($w) ? ' WHERE ' . ($this->_whereNotIn ? implode(' AND ', $this->_whereNotIn) : 1) : ' AND ' .($this->_whereNotIn ? implode(' AND ', $this->_whereNotIn) : 1));
-	    $this->_wh = $w;
+	    	$w = '';
+	    $w .= (empty($w) ? ($this->_where ? $this->_where : 1) : ($this->_where ? $this->_where : 1));
+	    $w .= (empty($w) ? ($this->_andWhere ? implode(' AND ', $this->_andWhere) : 1) : ' AND ' . ($this->_andWhere ? implode(' AND ', $this->_andWhere) : 1));
+	    $w .= (empty($w) ? ($this->_orWhere ? implode(' OR ', $this->_orWhere) : 1) : ' OR ' .($this->_orWhere ? implode(' OR ', $this->_orWhere) : 1));
+	    $w .= (empty($w) ? ($this->_whereBetween ? implode(' AND ', $this->_whereBetween) : 1) : ' AND ' .($this->_whereBetween ? implode(' AND ', $this->_whereBetween) : 1));
+	    $w .= (empty($w) ? ($this->_whereNotNull ? implode(' AND ', $this->_whereNotNull) : 1) : ' AND ' .($this->_whereNotNull ? implode(' AND ', $this->_whereNotNull) : 1));
+	    $w .= (empty($w) ? ($this->_orWhereBetween ? implode(' OR ', $this->_orWhereBetween) : 1) : ' OR ' .($this->_orWhereBetween ? implode(' OR ', $this->_orWhereBetween) : 1));
+	    $w .= (empty($w) ? ($this->_whereIn ? implode(' AND ', $this->_whereIn) : 1) : ' AND ' .($this->_whereIn ? implode(' AND ', $this->_whereIn) : 1));
+	    $w .= (empty($w) ? ($this->_whereNotIn ? implode(' AND ', $this->_whereNotIn) : 1) : ' AND ' .($this->_whereNotIn ? implode(' AND ', $this->_whereNotIn) : 1));
+	    return " WHERE " . $w;
     }
     public function table($name)
     {
@@ -450,6 +452,11 @@ class DB
     public function whereNotIn($col, $val = array())
     {
 	    $this->_whereNotIn[] = "$col NOT IN (" . (is_array($val) ? implode(',', $val) : $val) . ")";
+	    return $this;
+    }
+    public function whereNotNull($col)
+    {
+	    $this->_whereNotNull[] = "$col IS NOT NULL";
 	    return $this;
     }
     public function groupBy($col = array())
