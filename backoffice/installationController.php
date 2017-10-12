@@ -77,6 +77,8 @@ require LIBRARIES_PATH . DS . "class.upload" . EXT;';
 		$txts[] = '
 require LIBRARIES_PATH . DS . "barcodeAPI" .DS ."Unirest" . EXT;';
 		$txts[] = '
+require LIBRARIES_PATH . DS . "class.permission" . EXT;';
+		$txts[] = '
 require LIBRARIES_PATH . DS . "barcode" .DS ."BarcodeGenerator" . EXT;';
 		$txts[] = '
 require LIBRARIES_PATH . DS . "barcode" .DS ."BarcodeGeneratorHTML" . EXT;';
@@ -102,6 +104,8 @@ $jsCSSPath = end($aaa);';
 define("PATHPAGE"		,  $jsCSSPath . "Controller");';
 		$txts[] = '
 $db	= new DB();';
+		$txts[] = '
+$permissionCheck = new Permission;';
 		$txts[] = '
 ';
 		$txts[] = '
