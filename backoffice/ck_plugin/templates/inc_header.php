@@ -124,20 +124,3 @@
 	}); 
 </script>
 <!--=================================================================================-->
-<style type="text/css" media="screen">
-	.header-menu {
-	    background-color: rgb(0,27,48) !important;
-	    color: rgb(255,191,25) !important;
-	}
-	.top-header {
-		background-color: rgb(0,52,117) !important;
-	}
-	.top-header-font {
-	    color: rgb(255,191,25) !important;
-	}
-	.top-header-table, table > thead > tr > th, table > thead > th {
-		background-color: lightgray !important;
-		color: black !important;
-		white-space: nowrap;
-	}
-</style>
