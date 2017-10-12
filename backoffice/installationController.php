@@ -153,7 +153,6 @@ dbname = ' . p_string('database');
 		$this->db->query($sqlLevelStructure);
 		$sqlLevel = "INSERT INTO `{$db_prefix}admin_level` VALUES(2, 'Admin / IT', 'on:on:on:on:on:on:on:','{\"index\":{\"see\":\"on\"},\"admin\":{\"see\":\"on\",\"show\":\"on\",\"insert\":\"on\",\"edit\":\"on\"}}', 1, 0, 'S');";
 		
-(2, 'Admin / IT', 'on:on:on:on:on:on:on:on:on:', '{"index":{"see":"on"},"admin":{"see":"on","show":"on","insert":"on","edit":"on"}}', 1, 0, 'S'),
 		$this->db->query($sqlLevel);
 		$sqlLogStructure = "CREATE TABLE `{$db_prefix}logging` (
   `logging_id` int(11) NOT NULL,
