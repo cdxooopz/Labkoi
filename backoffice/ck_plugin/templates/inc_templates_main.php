@@ -14,9 +14,7 @@
         <a href="../index/" class="logo top-header top-header-font" >
           <!-- logo for regular state and mobile devices -->
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><b>T</b>P</span>
-          <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>The</b>Palace</span>
+          <span class="logo-mini"><b>L</b>K</span>
           <!-- logo for regular state and mobile devices -->
           <span class="logo-lg"><? echo WEB_PROJECT;?></span>
         </a>
