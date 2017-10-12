@@ -42,6 +42,8 @@ class DB
     protected $_orderBy = array();
     protected $_join = array();
     protected $_limit = array();
+    protected $_value = array();
+    protected $_values = array();
     
     /**
      *   Default Constructor 
@@ -322,16 +324,27 @@ class DB
         return $exception;
     }
     
-    protected function excute($query, $params = null, $fetchmode = PDO::FETCH_OBJ)
+    public function value($data)
     {
-	    
+	    $this->_values = $data;
+	    $dt = array();
+	    $dtc = array();
+		if(!empty($data)) {
+			foreach($data as $d => $v)
+			{
+				array_push($dt, "'{$v}'");
+				array_push($dtc, "{$d}");
+			}
+			$this->_value =  array(implode(",",$dtc),":" . implode(",:",$dtc));
+		}
+		return $this;
     }
     public function join($table = null, $colFirst = null, $colSecond = null, $operater = '=', $type = "INNER JOIN")
     {
 	    $this->_join[] = " {$type} {$table} ON {$this->_tableName}.{$colFirst} {$operater} {$table}.{$colSecond}";
 	    return $this;
     }
-    public function get($columns = array(), $params = null, $fetchmode = PDO::FETCH_OBJ)
+    public function get($columns = '', $params = null, $fetchmode = PDO::FETCH_OBJ)
     {
 	    $t = $this->_tableName;
 	    $c = (is_array($columns) ? implode(',', $columns) : '*');
@@ -343,10 +356,38 @@ class DB
 	    
 	    $sql = "SELECT {$c} FROM {$t} {$j} {$w} {$g} {$o} {$l}";
 	    $sql = $this->prepareSql($sql);
-	    echo $sql;
 	    $this->Init($sql);
 	    $result = $this->sQuery->fetchAll(PDO::FETCH_OBJ);
         return $result;
+    }
+    public function insert()
+    {
+	    $t = $this->_tableName;
+	    $v = $this->_value;
+		$sql 		= "INSERT INTO ".$t." (".$v[0].") VALUES (".$v[1].")";
+	    $this->Init($sql,$this->_values);
+    }
+    public function update()
+    {
+		$columns = array_keys($this->_values);
+
+		foreach($columns as $column)
+		{
+			$fieldsvals[] = $column . " = :". $column . "";
+		}
+	    $t = $this->_tableName;
+	    $w = $this->wh();
+	    $sql = "UPDATE " . $t .  " SET " . implode(',',$fieldsvals) . " {$w} ";
+	    $sql = $this->prepareSql($sql);
+	    $this->Init($sql,$this->_values);
+    }
+    public function delete()
+    {
+	    $t = $this->_tableName;
+	    $w = $this->wh();
+	    $sql = "DELETE FROM " . $t . " {$w} LIMIT 1" ;
+	    $sql = $this->prepareSql($sql);
+	    $this->Init($sql);
     }
     public function first()
     {
